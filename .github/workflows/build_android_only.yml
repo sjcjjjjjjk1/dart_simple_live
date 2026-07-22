@@ -23,11 +23,12 @@ jobs:
           flutter-version: "3.38.x"
           cache: true
 
-      # ✅ 生成 debug keystore + key.properties
+      # ✅ 修正：keystore 放到 app/ 目录下
       - name: Generate debug keystore
         run: |
-          cd simple_live_app/android
+          cd simple_live_app/android/app
           keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          cd ..
           echo "storeFile=debug.keystore" > key.properties
           echo "storePassword=android" >> key.properties
           echo "keyPassword=android" >> key.properties
@@ -53,4 +54,3 @@ jobs:
             simple_live_app/build/app/outputs/flutter-apk/app-x86_64-release.apk
 
       - run: echo "✅ Android build done."
-
